@@ -1,22 +1,13 @@
-A library for Dart developers.
+An audio library for Flutter.
 
-Created from templates made available by Stagehand under a BSD-style
+This project is based on [miniaudio](https://github.com/mackron/miniaudio) and
+made available to flutter via ffi.
+
+Made available under a BSD-style
 [license](https://github.com/dart-lang/stagehand/blob/master/LICENSE).
 
 ## Usage
 
-A simple usage example:
+Generated C bindings with ffigen. `pub get ; pub run ffigen`
 
-```dart
-import 'package:miniaudio-dart/miniaudio-dart.dart';
-
-main() {
-  var awesome = new Awesome();
-}
-```
-
-## Features and bugs
-
-Please file feature requests and bugs at the [issue tracker][tracker].
-
-[tracker]: http://example.com/issues/replaceme
+Added `*.sh` files to compile miniaudio for different platforms.
