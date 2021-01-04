@@ -15,9 +15,9 @@ dev_dependencies:
   ffigen: ^1.2.0
 
 ffigen:
-  name: 'miniaudio_dart_wrapper'
+  name: 'MiniAudioC'
   description: 'Bindings for miniaudio'
-  output: 'miniaudio.g.dart'
+  output: 'lib/src/bindings/miniaudio-c.dart'
   headers:
     entry-points:
       - '../miniaudio/miniaudio.h'

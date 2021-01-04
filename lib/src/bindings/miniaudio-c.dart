@@ -4,13 +4,12 @@
 import 'dart:ffi' as ffi;
 
 /// Bindings for miniaudio
-class miniaudio_dart_wrapper {
+class MiniAudioC {
   /// Holds the Dynamic library.
   final ffi.DynamicLibrary _dylib;
 
   /// The symbols are looked up in [dynamicLibrary].
-  miniaudio_dart_wrapper(ffi.DynamicLibrary dynamicLibrary)
-      : _dylib = dynamicLibrary;
+  MiniAudioC(ffi.DynamicLibrary dynamicLibrary) : _dylib = dynamicLibrary;
 
   int sched_yield() {
     _sched_yield ??=
