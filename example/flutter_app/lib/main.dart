@@ -1,4 +1,5 @@
 import 'dart:ffi';
+import 'dart:io';
 import 'package:ffi/ffi.dart';
 
 import 'package:flutter/material.dart';
@@ -18,98 +19,75 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  final String title;
+  MyHomePage({Key key}) : super(key: key);
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _playerResult = 0;
   ma.MiniAudioC bindings;
-  String absPath;
+  int _result = 0;
+  List<FileSystemEntity> paths;
+  String backPath;
 
   @override
   void initState() {
     super.initState();
-    getApplicationDocumentsDirectory().then((dir) {
-      setState(() {
-        bindings = ma.bindings;
-        absPath = dir.absolute.path;
-      });
+    getApplicationDocumentsDirectory().then((dir) async {
+      paths = await dir.list(recursive: true).toList();
+      backPath = FileSystemEntity.parentOf(dir.path);
+      bindings = ma.bindings;
+      setState(() {});
     });
   }
 
-  void _player() {
-    final filenames = ['dummy', '$absPath/assets/taunt.wav'];
-    Pointer<Pointer<Int8>> argv = allocate(count: 2);
-    final utf8s = filenames.map(Utf8.toUtf8).toList();
-    [0, 1].forEach((i) => argv[i] = utf8s[i].cast<Int8>());
-    final result = bindings.single_playback(2, argv);
-    free(argv);
+  Future<void> _player(String path) async {
+    final fileType = FileSystemEntity.typeSync(path);
+    if (fileType == FileSystemEntityType.file) {
+      final filenames = ['dummy', path];
+      Pointer<Pointer<Int8>> argv = allocate(count: 2);
+      final utf8s = filenames.map(Utf8.toUtf8).toList();
+      [0, 1].forEach((i) => argv[i] = utf8s[i].cast<Int8>());
+      final result = bindings.single_playback(2, argv);
+      free(argv);
 
-    setState(() {
-      _playerResult = result;
-    });
+      setState(() {
+        _result = result;
+      });
+    } else if (fileType == FileSystemEntityType.directory) {
+      paths = await Directory(path).list(recursive: true).toList();
+      backPath = FileSystemEntity.parentOf(path);
+      setState(() {});
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        title: Text('result: $_result'),
+        leading: IconButton(
+            icon: Icon(Icons.arrow_back), onPressed: () => _player(backPath)),
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'The previous result of the player:',
+      body: ListView.builder(
+        itemBuilder: (context, index) => ListTile(
+            title: Text(
+              paths[index].path,
+              style: FileSystemEntity.typeSync(paths[index].path) ==
+                      FileSystemEntityType.directory
+                  ? TextStyle(fontWeight: FontWeight.bold)
+                  : TextStyle(color: Colors.grey),
             ),
-            Text(
-              '$_playerResult',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
-        ),
+            onTap: () => _player(paths[index].path)),
+        itemCount: paths != null ? paths.length : 0,
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _player,
-        tooltip: 'Play',
-        child: Icon(Icons.play_arrow),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }

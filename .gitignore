@@ -20,3 +20,6 @@ Makefile
 *.so
 *.dylib
 *.dll
+
+.DS_Store
+.gradle
