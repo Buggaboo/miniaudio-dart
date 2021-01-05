@@ -21,6 +21,7 @@ ffigen:
   headers:
     entry-points:
       - '../miniaudio/miniaudio.h'
+      - 'source/miniaudio.c'
     include-directives:
       - '**.h'
 
