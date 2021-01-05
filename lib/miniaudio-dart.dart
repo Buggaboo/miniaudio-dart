@@ -3,6 +3,6 @@
 /// More dartdocs go here.
 library miniaudio-dart;
 
-export 'src/miniaudio-dart_base.dart';
+export 'src/bindings/bindings.dart';
 
 // TODO: Export any libraries intended for clients of this package.
