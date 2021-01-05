@@ -11,3 +11,8 @@ Made available under a BSD-style
 Generated C bindings with ffigen. `pub get ; pub run ffigen`
 
 Added `*.sh` files to compile miniaudio for different platforms.
+
+## Dependencies
+* [ios-cmake](https://github.com/leetal/ios-cmake)
+* LLVM
+* Android NDK
