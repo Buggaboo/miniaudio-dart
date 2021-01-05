@@ -1,7 +1,6 @@
 import 'dart:ffi';
 import 'dart:convert';
 import 'dart:io';
-import 'dart:convert';
 import 'package:ffi/ffi.dart';
 
 import '../lib/src/bindings/bindings.dart';

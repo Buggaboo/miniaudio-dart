@@ -1,7 +1,7 @@
 /// Support for doing something awesome.
 ///
 /// More dartdocs go here.
-library miniaudio-dart;
+library miniaudio_dart;
 
 export 'src/bindings/bindings.dart';
 

@@ -10,7 +10,8 @@ Made available under a BSD-style
 
 Generated C bindings with ffigen. `pub get ; pub run ffigen`
 
-Added `*.sh` files to compile miniaudio for different platforms.
+Run `*.sh` files first to compile miniaudio for different platforms;
+the examples (e.g. android, iOS) rely on those to build the C library.
 
 ## Dependencies
 * [miniaudio](https://github.com/mackron/miniaudio) (git clone)
