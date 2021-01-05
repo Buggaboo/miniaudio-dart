@@ -13,7 +13,14 @@ Generated C bindings with ffigen. `pub get ; pub run ffigen`
 Added `*.sh` files to compile miniaudio for different platforms.
 
 ## Dependencies
-* miniaudio
-* [ios-cmake](https://github.com/leetal/ios-cmake)
-* LLVM
+* [miniaudio](https://github.com/mackron/miniaudio) (git clone)
+* [ios-cmake](https://github.com/leetal/ios-cmake) (git clone)
+* LLVM (brew, apt, chocolate)
 * Android NDK
+
+## TODO
+* Provide instructions to build for iOS, android
+
+## Planned support
+* Windows
+* WASM
